@@ -1,0 +1,30 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:201009178507:certificate/e0afef03-2fbb-4d1d-a88f-a5ac1dd5b55b
+    alb.ingress.kubernetes.io/scheme: internet-facing 
+    alb.ingress.kubernetes.io/tags: Scheme=internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+  labels:
+    app: pwpush
+    component: ingress-controller
+    type: nginx
+  name: pwpush-ingress
+  namespace: sre
+spec:
+  rules:
+  - host: pwpush.linkedstore.com
+    http:
+      paths:
+      - backend:
+          serviceName: pwpush-http
+          servicePort: 5100
+        path: /*
+        pathType: ImplementationSpecific
+  tls: []
+  # - hosts:
+  #   - pwpush.linkedstore.com
+  #   secretName: pwpush.linkedstore.com

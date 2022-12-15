@@ -1,0 +1,63 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: pwpush
+    component: ingress-controller
+    type: nginx
+  name: pwpush
+  namespace: sre
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: pwpush
+      component: ingress-controller
+      type: nginx
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: pwpush
+        component: ingress-controller
+        type: nginx
+    spec:
+      containers:
+      - image: docker.io/pglombardo/pwpush-ephemeral
+        imagePullPolicy: Always
+        name: pwpush
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: 1
+          limits:
+            memory: "1024Mi"
+            cpu: 2
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        env:
+          - name: TZ
+            value: "America/Sao_Paulo"
+          - name: PWP__DEFAULT_LOCALE
+            value: "en"
+          - name: PWP__LOG_LEVEL
+            value: "warn"
+          - name: PWP__LOG_TO_STDOUT
+            value: 'true'
+          - name: PWP__EXPIRE_AFTER_DAYS_MIN
+            value: '15'
+          - name: PWP__EXPIRE_AFTER_DAYS_MAX
+            value: '1'
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
