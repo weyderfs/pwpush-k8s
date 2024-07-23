@@ -8,7 +8,7 @@ The project allow to you selfhosted the solution in your environment. Using the 
 
 # Disclaimer
 
-> In this deploy method Pwpush run in a ephemeral mode. Without store data. 
+> In this deploy method Pwpush run in a ephemeral mode, without store data. 
 > So what's means? If for any purpose the Pod of the Pwpush die/killed, any sensitive data in a valid time will be lost.
 
 # Installation
