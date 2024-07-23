@@ -5,9 +5,9 @@ metadata:
   labels:
     app: pwpush
     component: ingress-controller
-    type: nginx
+    type: alb
   name: pwpush-http
-  namespace: sre
+  namespace: your-ns
 spec:
   ports:
   - name: pwpush-http
@@ -17,7 +17,6 @@ spec:
   selector:
     app: pwpush
     component: ingress-controller
-    type: nginx
+    type: alb
   sessionAffinity: None
   type: ClusterIP
-...
