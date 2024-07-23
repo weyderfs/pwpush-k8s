@@ -5,19 +5,17 @@ metadata:
   labels:
     app: pwpush
     component: ingress-controller
-    type: alb
   name: pwpush
-  namespace: your-ns
+  namespace: security
 spec:
-  progressDeadlineSeconds: 600
+  progressDeadlineSeconds: 30
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
       app: pwpush
       component: ingress-controller
-      type: alb
-  strategy:
+    strategy:
     rollingUpdate:
       maxSurge: 25%
       maxUnavailable: 25%
@@ -28,7 +26,6 @@ spec:
       labels:
         app: pwpush
         component: ingress-controller
-        type: alb
     spec:
       containers:
       - image: docker.io/pglombardo/pwpush-ephemeral
@@ -36,11 +33,11 @@ spec:
         name: pwpush
         resources:
           requests:
-            memory: "512Mi"
+            memory: "256Mi"
             cpu: 1
           limits:
-            memory: "1024Mi"
-            cpu: 2
+            memory: "512Mi"
+            cpu: 1.5
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
         env:
@@ -52,6 +49,16 @@ spec:
             value: "warn"
           - name: PWP__LOG_TO_STDOUT
             value: 'true'
+          - name: PWP__THEME
+            value: "Sandstone"
+          - name: PWP__BRAND__TITLE
+            value: "Pwpush"
+          - name: PWP__BRAND__SHOW_FOOTER_MENU
+            value: 'false'
+          # - name: PWP__BRAND__LIGHT_LOGO
+          #   value: "http:///...."
+          # - name: PWP__BRAND__DARK_LOGO
+          #   value: "http:///...."
           # - name: PWP__EXPIRE_AFTER_DAYS_MIN
           #   value: ''
           # - name: PWP__EXPIRE_AFTER_DAYS_MAX

@@ -5,9 +5,8 @@ metadata:
   labels:
     app: pwpush
     component: ingress-controller
-    type: alb
   name: pwpush-http
-  namespace: your-ns
+  namespace: security
 spec:
   ports:
   - name: pwpush-http
@@ -17,6 +16,5 @@ spec:
   selector:
     app: pwpush
     component: ingress-controller
-    type: alb
   sessionAffinity: None
   type: ClusterIP
