@@ -34,6 +34,6 @@ kubectl delete -k .
 ```
 # What is deployed?
 
-- A single pod replica of `pwpush`
+- A single replica of the `pwpush`
 - A service using the port `5100`
 - A scheme for AWS ALB ingress, used to expose your app.
