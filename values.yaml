@@ -1,0 +1,24 @@
+namespace: "lalala"
+
+          - name: TZ
+            value: "America/Sao_Paulo"
+          - name: PWP__DEFAULT_LOCALE
+            value: "en"
+          - name: PWP__LOG_LEVEL
+            value: "warn"
+          - name: PWP__LOG_TO_STDOUT
+            value: 'true'
+          - name: PWP__THEME
+            value: "Sandstone"
+          - name: PWP__BRAND__TITLE
+            value: "Pwpush"
+          - name: PWP__BRAND__SHOW_FOOTER_MENU
+            value: 'false'
+          # - name: PWP__BRAND__LIGHT_LOGO
+          #   value: "http:///...."
+          # - name: PWP__BRAND__DARK_LOGO
+          #   value: "http:///...."
+          # - name: PWP__EXPIRE_AFTER_DAYS_MIN
+          #   value: ''
+          # - name: PWP__EXPIRE_AFTER_DAYS_MAX
+          #   value: '1'
