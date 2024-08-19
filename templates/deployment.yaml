@@ -25,8 +25,8 @@ spec:
         app: {{ .Release.Name | quote }}
         spec:
       containers:
-      - image: {{ .Values.image | default "docker.io/pglombardo/pwpush-ephemeral" }}
-        imagePullPolicy: {{ .Values.imagePullPolicy }}
+      - image: {{ .Values.image | default "docker.io/pglombardo/pwpush-ephemeral" | quote }}
+        imagePullPolicy: {{ .Values.imagePullPolicy | default "Always" | quote }}
         name: {{ .Release.Name | quote }}
         resources:
           requests:
@@ -34,7 +34,7 @@ spec:
             cpu: {{ .Values.requestCpu | default 1 }}
           limits:
             memory: {{ .Values.limitsMemory | default "512Mi" }}
-            cpu: {{ .Values.limitsCpu | default "1.5" }}
+            cpu: {{ .Values.limitsCpu | default 1.5 }}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: FallbackToLogsOnError
         env:
