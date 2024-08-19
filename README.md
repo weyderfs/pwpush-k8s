@@ -1,39 +1,35 @@
-# Password Pusher K8s Deployment
+# pwpush
 
-[Pwpush or Password Pusher](https://pwpush.com/) is a [project](https://github.com/pglombardo/PasswordPusher) created and maintained by [@pglombardo](https://github.com/pglombardo). 
+![Version: 0.0.1](https://img.shields.io/badge/Version-0.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.45.0](https://img.shields.io/badge/AppVersion-1.45.0-informational?style=flat-square)
 
-Pwpush is a solution to share passwords, secrets, any sensitive data in a security way.
+A Helm chart for Kubernetes
 
-The project allow to you selfhosted the solution in your environment. Using the **Pwpush-k8s**, such the name intent you will deploy the solution in a [Kubernetes](https://kubernetes.io/) Cluster.
+## Values
 
-# Disclaimer
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| dnsPolicy | string | `"ClusterFirst"` |  |
+| env[0].name | string | `"TZ"` |  |
+| env[0].value | string | `"America/Sao_Paulo"` |  |
+| env[1].name | string | `"PWP__DEFAULT_LOCALE"` |  |
+| env[1].value | string | `"en"` |  |
+| env[2].name | string | `"PWP__LOG_LEVEL"` |  |
+| env[2].value | string | `"warn"` |  |
+| image | string | `"docker.io/pglombardo/pwpush-ephemeral"` |  |
+| imagePullPolicy | string | `"Always"` |  |
+| limitsCpu | float | `1.5` |  |
+| limitsMemory | string | `"512Mi"` |  |
+| maxSurge | string | `"25%"` |  |
+| maxUnavailable | string | `"25%"` |  |
+| namespace | string | `"security"` |  |
+| progressDeadlineSeconds | int | `15` |  |
+| replicas | int | `1` |  |
+| requestCpu | int | `1` |  |
+| requestMemory | string | `"256Mi"` |  |
+| restartPolicy | string | `"Always"` |  |
+| schedulerName | string | `"default-scheduler"` |  |
+| securityContext | object | `{}` |  |
+| terminationGracePeriodSeconds | int | `30` |  |
+| terminationMessagePath | string | `"/dev/termination-log"` |  |
+| terminationMessagePolicy | string | `"FallbackToLogsOnError"` |  |
 
-> In this deploy method Pwpush run in a ephemeral mode, without store data. 
-> So what's means? If for any purpose the Pod of the Pwpush die/killed, any sensitive data in a valid time will be lost.
-
-# Installation
-
-## Requirements
-
-- The kubectl updated in some version that recognize the [Kustomize](https://kustomize.io/) parameter `-k`
-
-## How to Deploy?
-
-This is very simple, after made your customizations in the YAML files, just run:
-
-```sh
-kubectl apply -k .
-```
-
-## Teardown
-
-Easly like the installation, just run:
-
-```sh
-kubectl delete -k .
-```
-# What is deployed?
-
-- A single replica of the `pwpush`
-- A service using the port `5100`
-- A scheme for AWS ALB ingress, used to expose your app.
