@@ -4,7 +4,7 @@ metadata:
   name: {{ .Values.name }}-http
   namespace: {{ .Values.namespace }}
   labels:
-    {{- include "pwpush.labels" . | nindent 4 }}
+    {{- template "pwpush.labels" }}
 spec:
   type: {{ .Values.serviceType }}
   ports:
@@ -13,5 +13,5 @@ spec:
       targetPort: {{ .Values.targetPort | default 5100 }}
       protocol: TCP
   selector:
-    {{- include "pwpush.selectorLabels" . | nindent 4 }}
-  sessionAffinity: {{ .Values.service.sessionAffinity }}
+    {{- template "pwpush.labels" }}
+  sessionAffinity: {{ .Values.sessionAffinity }}

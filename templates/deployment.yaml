@@ -3,7 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: {{ .Release.Name | quote }}
+    {{- template "pwpush.labels" . }}
   name: {{ .Release.Name | quote }}
   namespace: {{ .Values.namespace | quote }}
 spec:
@@ -12,8 +12,8 @@ spec:
   revisionHistoryLimit: {{ .Values.revisionHistoryLimit | default 10 }}
   selector:
     matchLabels:
-      app: {{ .Release.Name | quote }}
-      strategy:
+      {{- template "pwpush.labels" . }} 
+    strategy:
     rollingUpdate:
       maxSurge: {{ .Values.maxSurge | default "25%" }}
       maxUnavailable: {{ .Values.maxUnavailable | default "25%" }}
@@ -22,27 +22,28 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        app: {{ .Release.Name | quote }}
-        spec:
-      containers:
-      - image: {{ .Values.image | default "docker.io/pglombardo/pwpush-ephemeral" | quote }}
-        imagePullPolicy: {{ .Values.imagePullPolicy | default "Always" | quote }}
-        name: {{ .Release.Name | quote }}
-        resources:
-          requests:
-            memory: {{ .Values.requestMemory | default "256Mi }}
-            cpu: {{ .Values.requestCpu | default 1 }}
-          limits:
-            memory: {{ .Values.limitsMemory | default "512Mi" }}
-            cpu: {{ .Values.limitsCpu | default 1.5 }}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: FallbackToLogsOnError
-        env:
-          {{ - range .Values.env }}
-          - name: {{ .name | upper }}
-            value: {{ .value }}  
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
+        {{- include "pwpush.labels" . }} 
+      spec:
+        containers:
+        - image: {{ .Values.image | default "docker.io/pglombardo/pwpush-ephemeral" | quote }}
+          imagePullPolicy: {{ .Values.imagePullPolicy | default "Always" | quote }}
+          name: {{ .Release.Name | quote }}
+          resources:
+            requests:
+              memory: {{ .Values.requestMemory | default "256Mi" }}
+              cpu: {{ .Values.requestCpu | default 1 }}
+            limits:
+              memory: {{ .Values.limitsMemory | default "512Mi" }}
+              cpu: {{ .Values.limitsCpu | default 1.5 }}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: FallbackToLogsOnError
+          env:
+            {{- range .Values.env }}
+            - name: {{ .name | upper }}
+              value: {{ .value }}
+            {{- end }}
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds | default 30 }}
